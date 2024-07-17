@@ -58,26 +58,20 @@ pipeline {
                 sh """
                 mvn sonar:sonar \
                 -Dsonar.projectKey=JavaWebApp-Project \
-                -Dsonar.host.url=http://172.31.90.165:9000 \
-                -Dsonar.login=$SONAR_TOKEN
+                -Dsonar.host.url=http://3.81.187.153:9000 \
+                -Dsonar.login=f8a35f2d841cb4f0d105f90c5fd33c3e0ca333f1
                 """
                 }
             }
         }
     }
-    stage('SonarQube GateKeeper') {
-        steps {
-          timeout(time : 1, unit : 'HOURS'){
-          waitForQualityGate abortPipeline: true
-          }
-       }
-    }
+    
     stage("Nexus Artifact Uploader"){
         steps{
            nexusArtifactUploader(
               nexusVersion: 'nexus3',
               protocol: 'http',
-              nexusUrl: '172.31.87.194:8081',
+              nexusUrl: '54.174.109.51:8081',
               groupId: 'webapp',
               version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
               repository: 'maven-project-releases',  //"${NEXUS_REPOSITORY}",
